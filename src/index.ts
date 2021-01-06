@@ -4,6 +4,7 @@ require('source-map-support').install();
 import { Debug, LogTag } from '00_Utils/debugger';
 
 import SlackBot from 'slackbots';
+import fs from 'fs';
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -47,8 +48,9 @@ bot.on('message', async (data) => {
   let message: string = '';
   try {
     if (data.text.indexOf('!') !== -1) {
-      let command = data.text.replace('!', '').replace('k8s', 'sudo kubectl');
-      message = await terminal(command);
+      let command = data.text.replace(/\u00a0/g, ' ').replace('<', '').replace('>', '').replace('!', '').replace('k8s', 'sudo kubectl');
+      fs.writeFileSync('command.sh', command, 'utf8');
+      message = await terminal('sh ./command.sh');
     }
   } catch(err) {
     message = err.message;
