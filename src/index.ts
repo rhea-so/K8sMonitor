@@ -46,7 +46,10 @@ bot.on('message', async (data) => {
   }
   let message: string = '';
   try {
-    message = await terminal(data.text);
+    if (data.text.indexOf('!') !== -1) {
+      let command = data.text.replace('!', '').replace('k8s', 'sudo kubectl');
+      message = await terminal(command);
+    }
   } catch(err) {
     message = err.message;
   }
