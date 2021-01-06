@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: simplepage
-          image: rhea31/simplepage:0.1
+          image: rhea31/simplepage:0.2
           ports:
             - containerPort: 8080
           livenessProbe:
